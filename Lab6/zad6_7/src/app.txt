@@ -1,0 +1,76 @@
+import './App.css';
+import React, { useState } from "react"
+import tinycolor from "tinycolor2";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import MainArea from "./components/MainArea";
+import Footer from "./components/Footer";
+function App() {
+    const [size, setSize] = useState("18px");
+    const [color, setColor] = useState("green");
+    const [like, setLike] = useState(0);
+    const [sizeInput, setSizeInput] = useState(size);
+    const [colorInput, setColorInput] = useState(color);
+
+    const handleSizeChange = (event) => {
+        const newSize = event.target.value;
+        setSizeInput(newSize);
+        if (/^\d+(?:px)?$/.test(newSize)) {
+          setSize(newSize);
+        } else{
+            console.error("Podano niepoprawną wartość rozmiaru ", newSize);
+        }
+      };
+
+      const handleColorChange = (event) => {
+        const newColor = event.target.value;
+        setColorInput(newColor);
+        if (/^[a-zA-Z]+$/.test(newColor) && tinycolor(newColor).isValid()) {
+          setColor(newColor);
+        } else {
+          console.error("Podano nieprawidłową wartość koloru ", newColor);
+        }
+      };
+return (
+<div className="grid-parent">
+
+
+<div className="header">
+<h1>Nagłówek</h1>
+<p>Aktualny rozmiar czcionki: <strong>{size}</strong></p>
+<p>Aktualny kolor czcionki: <strong>{color}</strong></p>
+<p>
+Liczba lajków: <strong>{like}</strong>
+</p>
+</div>
+<div className="sidebar">
+<input type="text" value={sizeInput} onChange={handleSizeChange} />
+<input type="text" value={colorInput} onChange={handleColorChange} />
+<button onClick={() => {
+    setColor("pink");
+    setColorInput("pink")
+    setSize("20px");
+    setSizeInput("20px")
+    
+    
+}}>Ustaw parametry tekstu na 20px i pink.</button>
+</div>
+
+
+
+<div className="main-area" style={{fontSize: size, color: color}}>
+<p>Szkielety programistyczne w aplikacjach internetowych: Node, MongoDB, Express, React.</p>
+</div>
+<Footer
+        size={size}
+        sizeInput={sizeInput}
+        like={like}
+        setLike={setLike}
+        setSize={setSize}
+        setSizeInput={setSizeInput}
+      />
+
+</div>
+)
+}
+export default App
